@@ -25,7 +25,8 @@ class Enemy(Object):
 	_reward
 
 class Red(Enemy):
-	def __init__(self):
+	def __init__(self, position):
+		self._currentPosition = position
 		self._healthPool = 10
 		self._moveSpeed = 2.0
 		self._reward = 2
@@ -35,7 +36,8 @@ class Red(Enemy):
 		return
 
 class Green(Enemy):
-	def __init__(self):
+	def __init__(self, position):
+		self._currentPosition = position
 		self._healthPool = 15
 		self._moveSpeed = 1.0
 		self._reward = 5
@@ -45,10 +47,12 @@ class Green(Enemy):
 		return
 
 class Blue(Enemy):
-	def __init__(self):
+	def __init__(self, position):
+		self._currentPosition = position
 		self._healthPool = 5
 		self._moveSpeed = 3.0
 		self._reward = 1
+		
 
 	def draw(self):
 		"""Code to draw"""
@@ -66,7 +70,8 @@ class Tower(Object):
 		return
 
 class CannonTower(Tower):
-	def __init__(self):
+	def __init__(self, x, y):
+		self._currentPosition = [x,y]
 		self._cost = 150
 		self._attackMode = AttackClosest
 		self._lastAttack = 0
@@ -82,7 +87,8 @@ class CannonTower(Tower):
 
 
 class ArrowTower(Tower):
-	def __init__(self):
+	def __init__(self, x, y):
+		self._currentPosition = [x,y]
 		self._cost = 50
 		self._attackMode = AttackClosest
 		self._lastAttack = 0
@@ -96,7 +102,8 @@ class ArrowTower(Tower):
 		return
 
 class FrostTower(Tower):
-	def __init__(self):
+	def __init__(self, x, y):
+		self._currentPosition = [x,y]
 		self._cost = 75
 		self._attackMode = AttackClosest
 		self._lastAttack = 0
