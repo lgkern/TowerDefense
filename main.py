@@ -31,41 +31,74 @@ class GameWindow:
 		#Menu Settings
 		self._myfont = pygame.font.SysFont("Arial",24)
 		self._towerTypes = []
-		self._towerTypes.append(["ArrowTower",(153,204,50)])
-		self._towerTypes.append(["CannonTower",(139,101,8)])
-		self._towerTypes.append(["FrostTower",(77,77,255)])
+		# type | color | y pos | selected
+		self._towerTypes.append(["ArrowTower",(153,204,50), 630, False])
+		self._towerTypes.append(["CannonTower",(139,101,8), 680, False])
+		self._towerTypes.append(["FrostTower",(77,77,255), 730, False])
 		
 
 	def running(self):
 		return self._runningGame
+		
 	def stop(self):
 		self._runningGame = False
+		
 	def drawBackground(self):
 		self._screen.blit(self._background, (0, 0))
 		return
+		
 	def drawPath(self):
 		path = self._controler.getPath()
 		for position in path:
 			pygame.draw.rect(self._screen,(255,228,181),pygame.Rect(position[1]*self._side,position[0]*self._side,self._side,self._side))
 		pygame.draw.rect(self._screen,(178,34,34),pygame.Rect(path[-1][1]*self._side,path[-1][0]*self._side,self._side,self._side))
 		return
-	def drawTowers(self):
+		
+	def drawTowers(self, x, y):
 		return
+		 
+		 
 	def drawEnemies(self):
 		return
+		
 	def drawGrid(self):
 		for line in range(21):
 			pygame.draw.rect(self._screen,(0,0,0),pygame.Rect(line*self._side,0,self._margin,600))
 			pygame.draw.rect(self._screen,(0,0,0),pygame.Rect(0,line*self._side,600,self._margin))
 		return
+		
 	def drawMenu(self):
 		pygame.draw.rect(self._screen,(0,0,0),pygame.Rect(600,0,200,600))
 		label = self._myfont.render("Available Towers",1,(135,206,250))
 		self._screen.blit(label, (610, 20))
-		towerAmount = 0
 		for tower in self._towerTypes:
-			pygame.draw.rect(self._screen,tower[1],pygame.Rect(630+50*towerAmount,50,40,40))			
-			towerAmount += 1
+			if tower[3]:
+				pygame.draw.rect(self._screen,(255,255,255),pygame.Rect(tower[2]-1,50-1,42,42))
+			pygame.draw.rect(self._screen,tower[1],pygame.Rect(tower[2],50,40,40))			
+		return
+	
+	def towerInMenu(self, x, y):
+		# 
+		true = False
+		if y in range(50,90):
+			for tower in self._towerTypes:
+				if x in range(tower[2], tower[2]+40):
+					tower[3] = True
+					true = True
+				else:
+					# deseleciona caso nao tenha clicado
+					tower[3] = False
+		else:
+			for tower in self._towerTypes:
+				tower[3] = False
+		if true:
+			return True
+		return False
+
+	def towerInGrid(self,x,y):
+		# se alguma torre do menu estiver selecionada
+			# ve se a posicao x,y esta num grid e pega suas coordenadas
+			# desenha a torre no grid
 		return
 
 	def loop(self):
@@ -74,21 +107,27 @@ class GameWindow:
 			if event.type == pygame.QUIT:
 				self.stop()	
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				self.stop()
-
-		self.drawBackground()
-		self.drawPath()
-		self.drawTowers()
-		self.drawEnemies()
-		self.drawGrid()	
-		self.drawMenu()
-
+				#self.stop()
+				x, y = event.pos
+				if self.towerInMenu(x, y):
+					print "Tower Selected"
+				else:
+					# if some is selected
+					self.towerInGrid(x,y)
 				
 		self._clock.tick(60)	
+		self.drawBackground()
+		self.drawPath()
+		self.drawGrid()	
+		self.drawMenu()
+		self.drawTowers()
+		self.drawEnemies()
+		
+		
 		
 		#pygame.draw.rect(self._screen,(0,0,0), pygame.Rect(20, 25, 40, 50))
 		pygame.display.flip()
-				
+			
 		
 		
 

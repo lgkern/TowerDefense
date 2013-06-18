@@ -17,7 +17,7 @@ class MapControler:
 
 	def addTower(self, towerType, x, y):
 		if availableSlot(x,y):		
-			tower.append(eval(towerType+"("+x+","+y+")")) #)ArrowTower(x,y))
+			self._tower.append(eval(towerType+"("+x+","+y+")")) #)ArrowTower(x,y))
 			return True
 		return False
 	
