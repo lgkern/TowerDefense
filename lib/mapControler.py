@@ -65,7 +65,7 @@ class MapControler:
 		self._path.append([19,11])
 
 	def getPath(self):
-		return _path
+		return self._path
 
 	def enemiesAlive(self):
 		return self._enemies
