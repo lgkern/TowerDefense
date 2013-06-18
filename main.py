@@ -22,10 +22,19 @@ class GameWindow:
 		self._clock = pygame.time.Clock()
 		# loop 
 		self._runningGame = True
+
+		#Map Settings
 		self._side = 30
 		self._margin = 2
 		self._controler = iGame()
+
+		#Menu Settings
 		self._myfont = pygame.font.SysFont("Arial",24)
+		self._towerTypes = []
+		self._towerTypes.append(["ArrowTower",(153,204,50)])
+		self._towerTypes.append(["CannonTower",(139,101,8)])
+		self._towerTypes.append(["FrostTower",(77,77,255)])
+		
 
 	def running(self):
 		return self._runningGame
@@ -53,13 +62,19 @@ class GameWindow:
 		pygame.draw.rect(self._screen,(0,0,0),pygame.Rect(600,0,200,600))
 		label = self._myfont.render("Available Towers",1,(135,206,250))
 		self._screen.blit(label, (610, 20))
+		towerAmount = 0
+		for tower in self._towerTypes:
+			pygame.draw.rect(self._screen,tower[1],pygame.Rect(630+50*towerAmount,50,40,40))			
+			towerAmount += 1
 		return
 
 	def loop(self):
 		# window/mouse events
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
-				game.stop()	
+				self.stop()	
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				self.stop()
 
 		self.drawBackground()
 		self.drawPath()
