@@ -1,6 +1,7 @@
 import os, sys
 import pygame
 from pygame.locals import *
+from lib.igame import iGame
 
 if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
@@ -29,6 +30,7 @@ class GameWindow:
 def main():
 	# inicializacao
 	game = GameWindow()
+	controler = iGame()
 	
 	while game.running():
 		# window/mouse events
