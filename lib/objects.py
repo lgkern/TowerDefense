@@ -1,5 +1,6 @@
 import os, sys
 import abc
+import pygame
 
 class Object:
 	__metaclass__ = abc.ABCMeta
@@ -8,12 +9,15 @@ class Object:
 	_alive = True
 	
 	def getPosition(self):
-		return _currentPosition
+		return self._currentPosition
 	def destroy(self):
-		_alive = false
+		self._alive = False
+	
+	def isAlive(self):
+		return _alive
 
 	@abc.abstractmethod
-	def draw(self):
+	def draw(self, screen):
 		"""Implemented on each of the leaves"""
 		return
 
@@ -33,6 +37,7 @@ class Enemy(Object):
 		self._healthPool -= damage
 		if self._healthPool <= 0:
 			_alive = False
+		
 
 class Red(Enemy):
 	def __init__(self, position):
@@ -41,9 +46,11 @@ class Red(Enemy):
 		self._moveSpeed = 2.0
 		self._reward = 2
 
-	def draw(self):
-		"""Code to draw"""
+	def draw(self, screen):
+		pygame.draw.circle(screen,(255,0,0),(self._currentPosition[1]*30+15,self._currentPosition[0]*30+5),5)
 		return
+	def move(self, newPosition):
+		self._currentPosition = newPosition
 
 class Green(Enemy):
 	def __init__(self, position):
@@ -52,8 +59,12 @@ class Green(Enemy):
 		self._moveSpeed = 1.0
 		self._reward = 5
 
-	def draw(self):
-		"""Code to draw"""
+	def draw(self, screen):
+		pygame.draw.circle(screen,(0,255,0),(self._currentPosition[1]*30+25,self._currentPosition[0]*30+5),5)
+
+	def move(self, newPosition):
+		self._currentPosition = newPosition
+
 		return
 
 class Blue(Enemy):
@@ -64,8 +75,12 @@ class Blue(Enemy):
 		self._reward = 1
 		
 
-	def draw(self):
-		"""Code to draw"""
+	def draw(self, screen):
+		pygame.draw.circle(screen,(0,0,255),(self._currentPosition[1]*30+5,self._currentPosition[0]*30+5),5)
+
+	def move(self, newPosition):
+		self._currentPosition = newPosition
+
 		return
 
 class Tower(Object):
@@ -89,57 +104,60 @@ class CannonTower(Tower):
 	def __init__(self, x, y):
 		self._currentPosition = [x,y]
 		self._cost = 150
-		self._attackMode = AttackClosest(x,y)
+		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
+		self._color = (139,101,8)
 
 	def attack(self):
 		target = _attackMode.getTarget()
 		return
 
-	def draw(self):
-		pygame.draw.rect(self._screen,(139,101,8),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
+	def draw(self, screen):
+		pygame.draw.rect(screen,(139,101,8),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
 		return
 
 	@staticmethod
-	def towerCost(self):
+	def towerCost():
 		return 150;
 
 class ArrowTower(Tower):
 	def __init__(self, x, y):
 		self._currentPosition = [x,y]
 		self._cost = 50
-		self._attackMode = AttackClosest(x,y)
+		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
+		self._color = (153,204,50)
 
 	def attack(self):
 		target = _attackMode.getTarget()
 		return
 
-	def draw(self):
-		pygame.draw.rect(self._screen,(153,204,50),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
+	def draw(self, screen):
+		pygame.draw.rect(screen,(153,204,50),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
 		return
 
 	@staticmethod
-	def towerCost(self):
+	def towerCost():
 		return 50;
 
 class FrostTower(Tower):
 	def __init__(self, x, y):
 		self._currentPosition = [x,y]
 		self._cost = 75
-		self._attackMode = AttackClosest(x,y)
+		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
+		self._color = (77,77,255)
 
 	def attack(self):
 		target = _attackMode.getTarget()
 		return
 
-	def draw(self):
-		pygame.draw.rect(self._screen,(77,77,255),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
+	def draw(self, screen):
+		pygame.draw.rect(screen,(77,77,255),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
 		return
 
 	@staticmethod
-	def towerCost(self):
+	def towerCost():
 		return 75;
 
 class Attack:

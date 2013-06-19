@@ -2,6 +2,7 @@ import os, sys
 import pygame
 from pygame.locals import *
 from lib.igame import iGame
+from lib.objects import ArrowTower, FrostTower, CannonTower
 
 if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
@@ -29,13 +30,15 @@ class GameWindow:
 		self._controler = iGame()
 
 		#Menu Settings
-		self._myfont = pygame.font.SysFont("Arial",24)
+		self._myfont = pygame.font.SysFont("Arial",22)
 		self._towerTypes = []
 		# type | color | y pos | selected
-		self._towerTypes.append(["ArrowTower",(153,204,50), 630, False])
-		self._towerTypes.append(["CannonTower",(139,101,8), 680, False])
-		self._towerTypes.append(["FrostTower",(77,77,255), 730, False])
+		self._towerTypes.append([ArrowTower,(153,204,50), 630, False])
+		self._towerTypes.append([CannonTower,(139,101,8), 680, False])
+		self._towerTypes.append([FrostTower,(77,77,255), 730, False])
 		
+		self._nextWave = 300
+		self._nextMove = 10
 
 	def running(self):
 		return self._runningGame
@@ -55,11 +58,12 @@ class GameWindow:
 		return
 		
 	def drawTowers(self):
-		
+		self._controler.drawTowers(self._screen)
 		return
 		 
 		 
 	def drawEnemies(self):
+		self._controler.drawEnemies(self._screen)
 		return
 		
 	def drawGrid(self):
@@ -75,7 +79,13 @@ class GameWindow:
 		for tower in self._towerTypes:
 			if tower[3]:
 				pygame.draw.rect(self._screen,(255,255,255),pygame.Rect(tower[2]-1,50-1,42,42))
-			pygame.draw.rect(self._screen,tower[1],pygame.Rect(tower[2],50,40,40))			
+			pygame.draw.rect(self._screen,tower[1],pygame.Rect(tower[2],50,40,40))		
+		labelGold = self._myfont.render("Current Gold: "+str(self._controler.getTotalGold()),1,(255,255,0))
+		self._screen.blit(labelGold, (610, 450))
+
+		labelLife = self._myfont.render("Remaining Life: "+str(self._controler.getRemainingLife()),1,(255,0,0))
+		self._screen.blit(labelLife, (610, 300))
+		
 		return
 	
 	def towerInMenu(self, x, y):
@@ -108,6 +118,26 @@ class GameWindow:
 				tower[3] = False
 		return
 
+	def moveEnemies(self):
+		self._controler.moveEnemies()
+		return
+
+	def spawnEnemies(self):
+		enemyWave = self._controler.getNextWave()
+		map(self._controler.spawnEnemy, enemyWave)
+
+	def spawnControl(self):
+		self._nextWave -= 1
+		if self._nextWave == 0:
+			self._nextWave = 300
+			self.spawnEnemies()	
+
+	def moveControl(self):
+		self._nextMove -= 1
+		if self._nextMove == 0:
+			self._nextMove = 10
+			self.moveEnemies()
+
 	def loop(self):
 		# window/mouse events
 		for event in pygame.event.get():
@@ -121,14 +151,16 @@ class GameWindow:
 				else:
 					# if some is selected
 					self.towerInGrid(x,y)
-	
+
+		self.spawnControl()
+		self.moveControl()
 		self._clock.tick(60)	
 		self.drawBackground()
 		self.drawPath()
-		self.drawGrid()	
 		self.drawMenu()
 		self.drawTowers()
 		self.drawEnemies()		
+		self.drawGrid()	
 		#pygame.draw.rect(self._screen,(0,0,0), pygame.Rect(20, 25, 40, 50))
 		pygame.display.flip()
 			

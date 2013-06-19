@@ -11,27 +11,39 @@ class MapControler:
 		self._path = []
 		self._generateMap()
 
-	def addEnemy(self, color):
-		enemies.append(eval(color+"(_path[0])"))
+	def addEnemy(self, color): 
+		self._enemies.append(color(self._path[0]))
 		return True
 
 	def addTower(self, towerType, x, y):
-		if availableSlot(x,y):		
-			self._tower.append(eval(towerType+"("+x+","+y+")")) #)ArrowTower(x,y))
+		if self.availableSlot(y,x):		
+			self._towers.append(towerType(x,y)) 
 			return True
 		return False
 	
 	def	availableSlot(self, x, y):
 		try:
-			_path.index([x,y])
+			self._path.index([x,y])
 			return False
 		finally:
 			slotFree = True
-			for tower in towers:
+			for tower in self._towers:
 				if tower.getPosition() == [x,y]:
 					slotFree = False
 			return slotFree
 
+	def moveEnemies(self):	
+		self._deleteDead()
+		amountEnd = 0
+		for enemy in self._enemies:			
+			if not moveEnemy(self._path, enemy):
+				amountEnd += 1
+		return amountEnd;
+
+	def _deleteDead(self):
+		for i in range(len(self._enemies)):
+			if not self._enemies[i].isAlive:
+				self._enemies.delete(i)
 								
 	def _generateMap(self):
 		#assuming a 20x20 initial grid #hue
@@ -70,19 +82,19 @@ class MapControler:
 	def enemiesAlive(self):
 		return self._enemies
 
+	def drawAllTowers(self,screen):
+		for tower in self._towers:
+			tower.draw(screen)	
 
-"""
-		if color == "red":
-			enemies.append(Red(_path[0]))
-		elif color == "blue":
-			enemies.append(Blue(_path[0]))
-		elif color == "green":
-			enemies.append(Green(_path[0]))"""
+	def drawAllEnemies(self,screen):
+		for enemy in self._enemies:
+			enemy.draw(screen)	
 
-"""			elif towerType == "cannon":
-				tower.append(CannonTower(x,y))
-			elif towerType == "frost":
-				tower.append(FrostTower(x,y))
-			else:
-				return False"""
-
+def moveEnemy(path, enemy):
+	currentPosition = path.index(enemy.getPosition())
+	if path[-1] == path[currentPosition]:
+		enemy.destroy()
+		return False
+	enemy.move(path[currentPosition+1])	
+	return True
+	
