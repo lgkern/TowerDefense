@@ -1,6 +1,7 @@
 import os, sys
 import abc
 import pygame
+import math
 
 class Object:
 	__metaclass__ = abc.ABCMeta
@@ -11,7 +12,7 @@ class Object:
 	def getPosition(self):
 		return self._currentPosition
 	def destroy(self):
-		self._alive = False
+		_alive = False
 	
 	def isAlive(self):
 		return _alive
@@ -31,11 +32,11 @@ class Enemy(Object):
 	_reward = 0
 
 	def getHealth(self):
-		return self._healthPool
+		return _healthPool
 
 	def inflictDamage(self, damage):
-		self._healthPool -= damage
-		if self._healthPool <= 0:
+		_healthPool -= damage
+		if _healthPool <= 0:
 			_alive = False
 		
 
@@ -107,9 +108,12 @@ class CannonTower(Tower):
 		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
 		self._color = (139,101,8)
+		self._damage = 10
 
-	def attack(self):
-		target = _attackMode.getTarget()
+	def attack(self, enemies):
+		target = self._attackMode.getTarget(enemies)
+		if target:
+			target.inflictDamage(self.damage)
 		return
 
 	def draw(self, screen):
@@ -127,9 +131,12 @@ class ArrowTower(Tower):
 		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
 		self._color = (153,204,50)
+		self._damage = 10
 
-	def attack(self):
-		target = _attackMode.getTarget()
+	def attack(self, enemies):
+		target = self._attackMode.getTarget(enemies)
+		if target:
+			target.inflictDamage(self.damage)
 		return
 
 	def draw(self, screen):
@@ -147,9 +154,12 @@ class FrostTower(Tower):
 		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
 		self._color = (77,77,255)
+		self._damage = 10
 
-	def attack(self):
-		target = _attackMode.getTarget()
+	def attack(self, enemies):
+		target = self._attackMode.getTarget(enemies)
+		if target:
+			target.inflictDamage(self.damage)
 		return
 
 	def draw(self, screen):
@@ -177,16 +187,17 @@ class AttackClosest(Attack):
 		target = False
 		if enemies:
 			for enemy in enemies:
-				if enemy.getDistance(_x,_y) < closest:
-					if inRange(enemy):
+				if enemy.getDistance(self._x,self._y) < closest:
+					if self.inRange(enemy):
 						closest = enemy.getDistance()
 						target = enemy
 		return target	
-
+	
 		if enemies:
 			return enemies[0]
 		return false
-
+	def inRange(self, enemy):
+		return enemy.getDistance(self._x,self._y) < 4
 class AttackLowest(Attack):
 	def __init__(self, position):
 		self._x = position[0]

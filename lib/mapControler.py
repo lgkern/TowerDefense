@@ -40,15 +40,15 @@ class MapControler:
 			if not moveEnemy(self._path, enemy):
 				amountEnd += 1
 				self._enemies.pop(i)
+			else: 
+				if not self._enemies[i].isAlive:
+					self._enemies.pop(i)
 			i+=1
-		self._deleteDead()
 		return amountEnd;
 
 	def _deleteDead(self):
-		print len(self._enemies)
 		for i in range(len(self._enemies)):
 			if not self._enemies[i].isAlive:
-				print "HELLO"
 				self._enemies.pop(i)
 								
 	def _generateMap(self):
@@ -84,7 +84,7 @@ class MapControler:
 
 	def getPath(self):
 		return self._path
-
+	
 	def enemiesAlive(self):
 		return self._enemies
 
@@ -94,7 +94,15 @@ class MapControler:
 
 	def drawAllEnemies(self,screen):
 		for enemy in self._enemies:
-			enemy.draw(screen)	
+			enemy.draw(screen)
+			print enemy._moveSpeed
+			print enemy._healthPool
+			print "\n"	
+			
+	def attackTowers(self):
+		for tower in self._towers:
+			tower.attack(self._enemies)
+		return
 
 def moveEnemy(path, enemy):
 	currentPosition = path.index(enemy.getPosition())

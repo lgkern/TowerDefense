@@ -9,7 +9,7 @@ class iGame:
 #	_remainingLife = 50
 #	_currentWave = 0
 	def __init__(self):
-		self._totalGold = 100
+		self._totalGold = 1000
 		self._remainingLife = 50
 		self._map = MapControler()
 		self._currentWave = 0
@@ -53,7 +53,9 @@ class iGame:
 		enemiesReached = self._map.moveEnemies()
 		self._remainingLife -= enemiesReached
 		return
-
+	def attackTowers(self):
+		self._map.attackTowers()
+		return
 	def getRemainingLife(self):
 		return self._remainingLife
 	

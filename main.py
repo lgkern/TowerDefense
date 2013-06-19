@@ -122,6 +122,10 @@ class GameWindow:
 		self._controler.moveEnemies()
 		return
 
+	def attackTowers(self):
+		self._controler.attackTowers()
+		return
+		
 	def spawnEnemies(self):
 		enemyWave = self._controler.getNextWave()
 		map(self._controler.spawnEnemy, enemyWave)
@@ -133,6 +137,7 @@ class GameWindow:
 			self.spawnEnemies()	
 
 	def moveControl(self):
+		self.attackTowers()
 		self._nextMove -= 1
 		if self._nextMove == 0:
 			self._nextMove = 10
