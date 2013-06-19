@@ -33,17 +33,23 @@ class MapControler:
 			return slotFree
 
 	def moveEnemies(self):	
-		self._deleteDead()
+		
 		amountEnd = 0
+		i = 0
 		for enemy in self._enemies:			
 			if not moveEnemy(self._path, enemy):
 				amountEnd += 1
+				self._enemies.pop(i)
+			i+=1
+		self._deleteDead()
 		return amountEnd;
 
 	def _deleteDead(self):
+		print len(self._enemies)
 		for i in range(len(self._enemies)):
 			if not self._enemies[i].isAlive:
-				self._enemies.delete(i)
+				print "HELLO"
+				self._enemies.pop(i)
 								
 	def _generateMap(self):
 		#assuming a 20x20 initial grid #hue
