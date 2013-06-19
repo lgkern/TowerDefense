@@ -97,7 +97,7 @@ class CannonTower(Tower):
 		return
 
 	def draw(self):
-		"""Code to draw"""
+		pygame.draw.rect(self._screen,(139,101,8),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
 		return
 
 	@staticmethod
@@ -116,7 +116,7 @@ class ArrowTower(Tower):
 		return
 
 	def draw(self):
-		"""Code to draw"""
+		pygame.draw.rect(self._screen,(153,204,50),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
 		return
 
 	@staticmethod
@@ -135,7 +135,7 @@ class FrostTower(Tower):
 		return
 
 	def draw(self):
-		"""Code to draw"""
+		pygame.draw.rect(self._screen,(77,77,255),pygame.Rect(self._currentPosition[0],self._currentPosition[1],30,30))
 		return
 
 	@staticmethod

@@ -54,7 +54,8 @@ class GameWindow:
 		pygame.draw.rect(self._screen,(178,34,34),pygame.Rect(path[-1][1]*self._side,path[-1][0]*self._side,self._side,self._side))
 		return
 		
-	def drawTowers(self, x, y):
+	def drawTowers(self):
+		
 		return
 		 
 		 
@@ -88,17 +89,23 @@ class GameWindow:
 				else:
 					# deseleciona caso nao tenha clicado
 					tower[3] = False
-		else:
-			for tower in self._towerTypes:
-				tower[3] = False
+		
 		if true:
 			return True
 		return False
 
 	def towerInGrid(self,x,y):
 		# se alguma torre do menu estiver selecionada
-			# ve se a posicao x,y esta num grid e pega suas coordenadas
-			# desenha a torre no grid
+		for tower in self._towerTypes:
+			if tower[3]:
+				# ve se a posicao x,y esta num grid e pega suas coordenadas
+				posX = int(x/30)*30
+				posY = int(y/30)*30
+				print posX
+				print posY
+				# desenha a torre no grid
+				self._controler.placeTower(tower[0], posX, posY)
+				tower[3] = False
 		return
 
 	def loop(self):
@@ -114,17 +121,14 @@ class GameWindow:
 				else:
 					# if some is selected
 					self.towerInGrid(x,y)
-				
+	
 		self._clock.tick(60)	
 		self.drawBackground()
 		self.drawPath()
 		self.drawGrid()	
 		self.drawMenu()
 		self.drawTowers()
-		self.drawEnemies()
-		
-		
-		
+		self.drawEnemies()		
 		#pygame.draw.rect(self._screen,(0,0,0), pygame.Rect(20, 25, 40, 50))
 		pygame.display.flip()
 			
