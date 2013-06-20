@@ -24,12 +24,21 @@ class iGame:
 
 	def getNextWave(self):
 		self._currentWave += 1
-		if self._currentWave == 1:
-			return [Red]
-		elif self._currentWave == 2:
-			return [Red,Blue]
+		return self._wave(self._currentWave)
+		
+	def _wave(self, waveNumber):
+		if waveNumber == 0:
+			return []
 		else:
-			return [Red,Blue,Green]
+			waveNumber -= 1
+			if self._currentWave % 3 == 0:
+				return [Red] + self._wave(waveNumber)
+			elif self._currentWave % 3 == 1:
+				return [Red,Blue] + self._wave(waveNumber)
+			else:
+				return [Red,Blue,Green] + self._wave(waveNumber)
+			
+		
 
 	def spawnEnemy(self, enemyType):
 		self._map.addEnemy(enemyType)
