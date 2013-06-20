@@ -39,7 +39,9 @@ class GameWindow:
 		
 		self._nextWave = 300
 		self._nextMove = 10
-
+		
+		self.started = False
+		
 	def running(self):
 		return self._runningGame
 		
@@ -85,6 +87,11 @@ class GameWindow:
 
 		labelLife = self._myfont.render("Remaining Life: "+str(self._controler.getRemainingLife()),1,(255,0,0))
 		self._screen.blit(labelLife, (610, 300))
+		
+		pygame.draw.rect(self._screen,(255,255,255),pygame.Rect(650,245,100,30))
+		
+		labelLife = self._myfont.render("START",1,(0,0,0))
+		self._screen.blit(labelLife, (660, 250))
 		
 		return
 	
@@ -142,7 +149,12 @@ class GameWindow:
 		if self._nextMove == 0:
 			self._nextMove = 10
 			self.moveEnemies()
-
+	
+	def startButtonPress(self, x, y):
+		if x in range(650,750):
+			if y in range(245,275):
+				return True
+		return False
 	def loop(self):
 		# window/mouse events
 		for event in pygame.event.get():
@@ -151,15 +163,19 @@ class GameWindow:
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				#self.stop()
 				x, y = event.pos
-				if self.towerInMenu(x, y):
-					print "Tower Selected"
+				if self.startButtonPress(x,y):
+					self.started = True
 				else:
-					# if some is selected
-					self.towerInGrid(x,y)
+					if self.towerInMenu(x, y):
+						print "Tower Selected"
+					else:
+						# if some is selected
+						self.towerInGrid(x,y)
 
-		self.spawnControl()
-		self.moveControl()
-		self._clock.tick(60)	
+		if self.started :
+			self.spawnControl()
+			self.moveControl()
+			self._clock.tick(60)	
 		self.drawBackground()
 		self.drawPath()
 		self.drawMenu()

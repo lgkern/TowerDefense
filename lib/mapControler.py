@@ -95,6 +95,7 @@ class MapControler:
 	def drawAllEnemies(self,screen):
 		for enemy in self._enemies:
 			enemy.draw(screen)
+			enemy.inflictDamage(3)
 			print enemy._moveSpeed
 			print enemy._healthPool
 			print "\n"	

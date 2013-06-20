@@ -35,8 +35,8 @@ class Enemy(Object):
 		return _healthPool
 
 	def inflictDamage(self, damage):
-		_healthPool -= damage
-		if _healthPool <= 0:
+		self._healthPool -= damage
+		if self._healthPool <= 0:
 			_alive = False
 		
 
