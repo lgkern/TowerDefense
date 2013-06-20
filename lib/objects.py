@@ -132,7 +132,6 @@ class CannonTower(Tower):
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
 		if target:
-			print "ATTACK BY CANON"
 			target.inflictDamage(self._damage)
 		return
 
@@ -156,7 +155,6 @@ class ArrowTower(Tower):
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
 		if target:
-			print "ATTACK BY ARROW"
 			target.inflictDamage(self._damage)
 		return
 
@@ -180,7 +178,6 @@ class FrostTower(Tower):
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
 		if target:
-			print "ATTACK BY FROST"
 			target.inflictDamage(self._damage)
 		return
 
@@ -211,7 +208,6 @@ class AttackClosest(Attack):
 			for enemy in enemies:
 				if enemy.getDistance(self._x,self._y) < closest and enemy.getHealth() > 0:
 					if self.inRange(enemy):
-						print "KKKKKKKKKKKKKKKKKKKKK"
 						closest = enemy.getDistance(self._x,self._y)
 						target = enemy
 		return target	

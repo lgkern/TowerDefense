@@ -38,7 +38,8 @@ class iGame:
 			else:
 				return [Red,Blue,Green] + self._wave(waveNumber)
 			
-		
+	def enemiesScore(self):
+		return self._map.enemiesKilled();	
 
 	def spawnEnemy(self, enemyType):
 		self._map.addEnemy(enemyType)

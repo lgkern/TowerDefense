@@ -93,6 +93,9 @@ class GameWindow:
 		labelLife = self._myfont.render("START",1,(0,0,0))
 		self._screen.blit(labelLife, (660, 250))
 		
+		labelLife = self._myfont.render("Enemies Killed: "+str(self._controler.enemiesScore()),1,(0,255,0))
+		self._screen.blit(labelLife, (610, 200))
+		
 		return
 	
 	def towerInMenu(self, x, y):

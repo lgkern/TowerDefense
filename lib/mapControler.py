@@ -10,6 +10,13 @@ class MapControler:
 		self._towers = []
 		self._path = []
 		self._generateMap()
+		
+	def enemiesKilled(self):
+		killed = 0;
+		for enemy in self._enemies:
+			if enemy.getHealth() <= 0:
+				killed +=1
+		return killed
 
 	def addEnemy(self, color): 
 		self._enemies.append(color(self._path[0]))
