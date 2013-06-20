@@ -41,7 +41,6 @@ class GameWindow:
 		self._nextMove = 10
 		
 		self.started = False
-		self.endGame = False
 		
 	def running(self):
 		return self._runningGame
@@ -175,24 +174,17 @@ class GameWindow:
 					else:
 						# if some is selected
 						self.towerInGrid(x,y)
-		if self._controler.getRemainingLife() < 0:
-			self.endGame = True
-		if not self.endGame :
-			if self.started :
-				self.spawnControl()
-				self.moveControl()
-				self._clock.tick(60)	
-			self.drawBackground()
-			self.drawPath()
-			self.drawMenu()
-			self.drawTowers()
-			self.drawEnemies()		
-			self.drawGrid()	
-		else:
-			self.drawBackground()
-			pygame.font.SysFont("Arial",30)
-			labelLife = self._myfont.render("GAME OVER",1,(0,0,0))
-			self._screen.blit(labelLife, (300, 300))
+
+		if self.started :
+			self.spawnControl()
+			self.moveControl()
+			self._clock.tick(60)	
+		self.drawBackground()
+		self.drawPath()
+		self.drawMenu()
+		self.drawTowers()
+		self.drawEnemies()		
+		self.drawGrid()	
 		#pygame.draw.rect(self._screen,(0,0,0), pygame.Rect(20, 25, 40, 50))
 		pygame.display.flip()
 			

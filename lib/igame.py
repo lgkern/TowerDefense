@@ -13,6 +13,7 @@ class iGame:
 		self._remainingLife = 50
 		self._map = MapControler()
 		self._currentWave = 0
+		self._goldPackUnit = 0
 	
 	def placeTower(self, towerType, x, y):
 		reqGold = towerType.towerCost()
@@ -39,7 +40,11 @@ class iGame:
 				return [Red,Blue,Green] + self._wave(waveNumber)
 			
 	def enemiesScore(self):
-		return self._map.enemiesKilled();	
+		killed = self._map.enemiesKilled();	
+		packUnit = int(killed/10)
+		self._totalGold += (int(killed/10) - self._goldPackUnit)*10
+		self._goldPackUnit = packUnit
+		return killed
 
 	def spawnEnemy(self, enemyType):
 		self._map.addEnemy(enemyType)
