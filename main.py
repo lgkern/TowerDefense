@@ -174,17 +174,23 @@ class GameWindow:
 					else:
 						# if some is selected
 						self.towerInGrid(x,y)
-
-		if self.started :
-			self.spawnControl()
-			self.moveControl()
-			self._clock.tick(60)	
-		self.drawBackground()
-		self.drawPath()
-		self.drawMenu()
-		self.drawTowers()
-		self.drawEnemies()		
-		self.drawGrid()	
+						
+		if self._controler.getRemainingLife() > 0 :
+			if self.started :
+				self.spawnControl()
+				self.moveControl()
+				self._clock.tick(60)	
+			self.drawBackground()
+			self.drawPath()
+			self.drawMenu()
+			self.drawTowers()
+			self.drawEnemies()		
+			self.drawGrid()	
+		else:
+			self.drawBackground()
+			self._myfont = pygame.font.SysFont("Arial",34)
+			labelLife = self._myfont.render("GAME OVER: "+str(self._controler.enemiesScore())+" Killed",1,(0,255,0))
+			self._screen.blit(labelLife, (200, 300))
 		#pygame.draw.rect(self._screen,(0,0,0), pygame.Rect(20, 25, 40, 50))
 		pygame.display.flip()
 			
