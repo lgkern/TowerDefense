@@ -32,8 +32,10 @@ class Enemy(Object):
 	_reward = 0
 
 	def getHealth(self):
-		return _healthPool
-
+		return self._healthPool
+	
+	def isAlive(self):
+		return _alive
 	def inflictDamage(self, damage):
 		self._healthPool -= damage
 		if self._healthPool <= 0:
@@ -53,7 +55,8 @@ class Red(Enemy):
 		pygame.draw.circle(screen,(255,0,0),(self._currentPosition[1]*30+15,self._currentPosition[0]*30+5),5)
 		return
 	def move(self, newPosition):
-		self._currentPosition = newPosition
+		if self._healthPool > 0:
+			self._currentPosition = newPosition
 
 class Green(Enemy):
 	def __init__(self, position):
@@ -68,7 +71,8 @@ class Green(Enemy):
 		pygame.draw.circle(screen,(0,255,0),(self._currentPosition[1]*30+25,self._currentPosition[0]*30+5),5)
 
 	def move(self, newPosition):
-		self._currentPosition = newPosition
+		if self._healthPool > 0:
+			self._currentPosition = newPosition
 
 		return
 
@@ -86,7 +90,8 @@ class Blue(Enemy):
 		pygame.draw.circle(screen,(0,0,255),(self._currentPosition[1]*30+5,self._currentPosition[0]*30+5),5)
 
 	def move(self, newPosition):
-		self._currentPosition = newPosition
+		if self._healthPool > 0:
+			self._currentPosition = newPosition
 
 		return
 
@@ -196,7 +201,7 @@ class AttackClosest(Attack):
 		target = False
 		if enemies:
 			for enemy in enemies:
-				if enemy.getDistance(self._x,self._y) < closest:
+				if enemy.getDistance(self._x,self._y) < closest and enemy.getHealth() > 0:
 					print "HERE"
 					print enemy.getDistance(self._x,self._y)
 					print "__________"
@@ -209,8 +214,11 @@ class AttackClosest(Attack):
 		if enemies:
 			return enemies[0]
 		return false
+		
 	def inRange(self, enemy):
 		return enemy.getDistance(self._x,self._y) < 7
+		
+		
 class AttackLowest(Attack):
 	def __init__(self, position):
 		self._x = position[0]
