@@ -17,10 +17,9 @@ class MapControler:
 
 	def addTower(self, towerType, x, y):
 		if self.availableSlot(y,x):		
-			self._towers.append(towerType(x,y)) 
+			self._towers.append(towerType(x,y))
 			return True
 		return False
-	
 	def	availableSlot(self, x, y):
 		try:
 			self._path.index([x,y])
@@ -95,7 +94,6 @@ class MapControler:
 	def drawAllEnemies(self,screen):
 		for enemy in self._enemies:
 			enemy.draw(screen)
-			enemy.inflictDamage(3)
 			print enemy._moveSpeed
 			print enemy._healthPool
 			print "\n"	

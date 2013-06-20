@@ -23,7 +23,7 @@ class Object:
 		return
 
 	def getDistance(self, x, y):
-		return math.sqrt(math.pow(self._currentPosition[0]-x,2)+math.pow(self._currentPosition[1]-y,2))
+		return math.sqrt(math.pow(self._currentPosition[0]-int(x/30),2)+math.pow(self._currentPosition[1]/30-int(y/30),2))
 
 class Enemy(Object):
 	__metaclass__ = abc.ABCMeta
@@ -48,6 +48,8 @@ class Red(Enemy):
 		self._reward = 2
 
 	def draw(self, screen):
+		if int(9*self._healthPool/10) > 0:
+			pygame.draw.rect(screen,(0,255,0),pygame.Rect(self._currentPosition[1]*30+12,self._currentPosition[0]*30-10,int(9*self._healthPool/10),3))
 		pygame.draw.circle(screen,(255,0,0),(self._currentPosition[1]*30+15,self._currentPosition[0]*30+5),5)
 		return
 	def move(self, newPosition):
@@ -61,6 +63,8 @@ class Green(Enemy):
 		self._reward = 5
 
 	def draw(self, screen):
+		if int(9*self._healthPool/15) > 0:
+			pygame.draw.rect(screen,(0,255,0),pygame.Rect(self._currentPosition[1]*30+22,self._currentPosition[0]*30-10,int(9*self._healthPool/15),3))
 		pygame.draw.circle(screen,(0,255,0),(self._currentPosition[1]*30+25,self._currentPosition[0]*30+5),5)
 
 	def move(self, newPosition):
@@ -77,6 +81,8 @@ class Blue(Enemy):
 		
 
 	def draw(self, screen):
+		if int(9*self._healthPool/5) > 0:
+			pygame.draw.rect(screen,(0,255,0),pygame.Rect(self._currentPosition[1]*30+2,self._currentPosition[0]*30-10,int(9*self._healthPool/5),3))
 		pygame.draw.circle(screen,(0,0,255),(self._currentPosition[1]*30+5,self._currentPosition[0]*30+5),5)
 
 	def move(self, newPosition):
@@ -113,7 +119,8 @@ class CannonTower(Tower):
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
 		if target:
-			target.inflictDamage(self.damage)
+			print "ATTACK BY CANON"
+			target.inflictDamage(self._damage)
 		return
 
 	def draw(self, screen):
@@ -136,7 +143,8 @@ class ArrowTower(Tower):
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
 		if target:
-			target.inflictDamage(self.damage)
+			print "ATTACK BY ARROW"
+			target.inflictDamage(self._damage)
 		return
 
 	def draw(self, screen):
@@ -159,7 +167,8 @@ class FrostTower(Tower):
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
 		if target:
-			target.inflictDamage(self.damage)
+			print "ATTACK BY FROST"
+			target.inflictDamage(self._damage)
 		return
 
 	def draw(self, screen):
@@ -188,8 +197,12 @@ class AttackClosest(Attack):
 		if enemies:
 			for enemy in enemies:
 				if enemy.getDistance(self._x,self._y) < closest:
+					print "HERE"
+					print enemy.getDistance(self._x,self._y)
+					print "__________"
 					if self.inRange(enemy):
-						closest = enemy.getDistance()
+						print "KKKKKKKKKKKKKKKKKKKKK"
+						closest = enemy.getDistance(self._x,self._y)
 						target = enemy
 		return target	
 	
@@ -197,7 +210,7 @@ class AttackClosest(Attack):
 			return enemies[0]
 		return false
 	def inRange(self, enemy):
-		return enemy.getDistance(self._x,self._y) < 4
+		return enemy.getDistance(self._x,self._y) < 7
 class AttackLowest(Attack):
 	def __init__(self, position):
 		self._x = position[0]
