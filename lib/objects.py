@@ -127,7 +127,7 @@ class CannonTower(Tower):
 		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
 		self._color = (139,101,8)
-		self._damage = 10
+		self._damage = 3
 
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
@@ -151,7 +151,7 @@ class ArrowTower(Tower):
 		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
 		self._color = (153,204,50)
-		self._damage = 10
+		self._damage = 1
 
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
@@ -175,7 +175,7 @@ class FrostTower(Tower):
 		self._attackMode = AttackClosest([x,y])
 		self._lastAttack = 0
 		self._color = (77,77,255)
-		self._damage = 10
+		self._damage = 2
 
 	def attack(self, enemies):
 		target = self._attackMode.getTarget(enemies)
@@ -210,9 +210,6 @@ class AttackClosest(Attack):
 		if enemies:
 			for enemy in enemies:
 				if enemy.getDistance(self._x,self._y) < closest and enemy.getHealth() > 0:
-					print "HERE"
-					print enemy.getDistance(self._x,self._y)
-					print "__________"
 					if self.inRange(enemy):
 						print "KKKKKKKKKKKKKKKKKKKKK"
 						closest = enemy.getDistance(self._x,self._y)

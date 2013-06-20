@@ -94,9 +94,6 @@ class MapControler:
 	def drawAllEnemies(self,screen):
 		for enemy in self._enemies:
 			enemy.draw(screen)
-			print enemy._moveSpeed
-			print enemy._healthPool
-			print "\n"	
 			
 	def attackTowers(self):
 		for tower in self._towers:
@@ -108,6 +105,10 @@ def moveEnemy(path, enemy):
 	if path[-1] == path[currentPosition]:
 		enemy.destroy()
 		return False
-	enemy.move(path[currentPosition+int(enemy.getMoveSpeed())])	
+	
+	if currentPosition+int(enemy.getMoveSpeed()) in range(len(path)):
+		enemy.move(path[currentPosition+int(enemy.getMoveSpeed())])	
+	else:
+		enemy.move(path[currentPosition+1])	
 	return True
 	
