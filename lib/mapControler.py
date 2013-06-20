@@ -108,6 +108,6 @@ def moveEnemy(path, enemy):
 	if path[-1] == path[currentPosition]:
 		enemy.destroy()
 		return False
-	enemy.move(path[currentPosition+1])	
+	enemy.move(path[currentPosition+int(enemy.getMoveSpeed())])	
 	return True
 	

@@ -40,6 +40,7 @@ class Enemy(Object):
 		self._healthPool -= damage
 		if self._healthPool <= 0:
 			_alive = False
+	
 		
 
 class Red(Enemy):
@@ -57,6 +58,9 @@ class Red(Enemy):
 	def move(self, newPosition):
 		if self._healthPool > 0:
 			self._currentPosition = newPosition
+	
+	def getMoveSpeed(self):
+		return self._moveSpeed
 
 class Green(Enemy):
 	def __init__(self, position):
@@ -73,6 +77,8 @@ class Green(Enemy):
 	def move(self, newPosition):
 		if self._healthPool > 0:
 			self._currentPosition = newPosition
+	def getMoveSpeed(self):
+		return self._moveSpeed
 
 		return
 
@@ -94,6 +100,8 @@ class Blue(Enemy):
 			self._currentPosition = newPosition
 
 		return
+	def getMoveSpeed(self):
+		return self._moveSpeed
 
 class Tower(Object):
 	__metaclass__ = abc.ABCMeta
